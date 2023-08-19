@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>💳 Taipei FunPASS Unlimited Calculator</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script type="module">
+    import Alpine from "https://cdn.jsdelivr.net/npm/alpinejs@3/+esm";
+    import createStores from "./stores.js";
+    import { installGlobally } from "./utilities.js";
+
+    createStores();
+    installGlobally();
+
+    window.Alpine = Alpine;
+    Alpine.start();
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css">
+  <style>
+    body {
+      /* Have a wider display for desktop windows */
+      max-width: 1200px;
+    }
+    label {
+      /* Align labels better with checkboxes */
+      display: inline;
+      vertical-align: unset;
+    }
+    input.estimate {
+      display: inline;
+      vertical-align: unset;
+      margin-right: unset;
+      padding: 3px;
+      max-width: 3rem;
+    }
+    .column-container {
+      /* Auto-sizing two column layout */
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+      gap: 1rem;
+    }
+    .activities-table {
+      max-height: 40vh; 
+      overflow-y: auto;
+    }
+  </style>
+  <script data-goatcounter="https://xenonym-github.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</head>
+<body>
+  <h1>💳 Taipei FunPASS Unlimited Calculator</h1>
+  <details open>
+    <summary>About this site</summary>
+    <p>
+      The <a href="https://taipei.funpass.app" target="_blank">Taipei FunPASS Unlimited</a> is a travel pass that includes admission to 25 attractions in and around Taipei, as well as unlimited MRT, bus and tourist shuttle rides. It also includes a choice of one out of 4 possible cultural experiences.
+    </p>
+    <p>This is a simple tool to help you:</p>
+    <ol>
+      <li>Choose which activities you are interested in</li>
+      <li>Figure out how many days your pass should be for</li>
+      <li>Estimate how much transport you might use with the pass</li>
+      <li>Calculate how much you can save <em>or</em> if you should book your chosen activities seperately</li>
+    </ol>
+    <p>
+      To further help your planning, you can also refer to <a href="https://www.nickkembel.com/taipei-unlimited-fun-pass/" target="_blank">Nick Kembel's guide</a> (which this tool is heavily inspired by). You may also be interested in the <a href="https://xenonym.github.io/klook-taipei-pass-calculator/" target="_blank">Klook Pass Taipei calculator</a> that I made as well!
+    </p>
+    <h2>How to use this site</h2>
+    <ol>
+      <li>In the <em>Estimated usage</em> section, estimate how many activities you can do each day, as well as how many transport rides you might take.</li>
+      <li>Look through the list of activities and cultural experiences in the table below or on the <a href="https://taipei.funpass.app" target="_blank">Taipei FunPASS</a> webpage.</li>
+      <li>Choose one or more activities by checking the checkbox in the <em>Choice</em> column in the Choices table. Your choices will show up in the <em>Chosen activities</em> section. To remove a chosen activity, uncheck the checkbox beside the activity name. The number of activities you can select is limited by the number of activities you can do per day. For example, if you can do 2 activities a day, the maximum number of activities you can select is 6 activities, including one Cultural Experience, assuming that you get a 3-day pass. </li>
+      <li>The <em>Suggested pass</em> section will recommend a pass, as well as the potential savings over booking each activity seperately.</li>
+    </ol>
+    <h2>Available pass types</h2>
+    <ul x-data="{ passes: [] }" x-modelable="passes" x-model="$store.passes.all">
+      <template x-for="pass in passes">
+        <li x-text="describePass(pass)"></li>
+      </template>
+    </ul>
+  </details>
+
+  <section class="column-container" x-data>
+    <div>
+      <h2>Estimated usage</h2>
+      <div
+        x-data="{estimates: $store.parameters.getDefaultEstimates()}"
+        x-modelable="estimates"
+        x-model="$store.parameters.estimates"
+      >
+        <ul>
+          <li>
+            I can do <input type="number" class="estimate" x-model="estimates.activities.count" min=1 max=10> activities a day
+          </li>
+          <li>
+            I will take <input type="number" class="estimate" x-model="estimates.transport.mrt.count" min=0> MRT ride(s) a day<br>
+            (assuming <input type="number" class="estimate" x-model="estimates.transport.mrt.cost" min=1> NTD per ride)
+          </li>
+          <li>
+            I will take <input type="number" class="estimate" x-model="estimates.transport.bus.count" min=0> bus ride(s) a day<br>
+            (assuming <input type="number" class="estimate" x-model="estimates.transport.bus.cost" min=1> NTD per ride)
+          </li>
+          <li>
+            I will take <input type="number" class="estimate" x-model="estimates.transport.shuttle.count" min=0> tourist shuttle bus ride(s)<br>
+            (assuming <input type="number" class="estimate" x-model="estimates.transport.shuttle.cost" min=1> NTD per ride)
+          </li>
+        </ul>
+        <button type="button" @click="$store.parameters.resetEstimates()">Reset estimates</button>
+      </div>
+    </div>
+    <div>
+      <h2>Chosen activities</h2>
+        <template x-if="$store.parameters.activities.length">
+          <div>
+            <ul>
+              <template x-for="choiceName in $store.parameters.activities" :key="choiceName">
+                <li>
+                  <input
+                    type="checkbox"
+                    :name="choiceName"
+                    x-model="$store.parameters.activities"
+                    :value="choiceName"
+                  ><label 
+                    :for="choiceName"
+                    x-text="choiceName"
+                  ></label> (<span x-text="$store.choices.getChoice(choiceName).Price"></span> NTD)
+                </li>
+              </template>
+            </ul>
+            <button style="margin-top: 1rem;" type="button" @click="$store.parameters.clearActivities()">Clear all choices</button>
+          </div>
+        </template>
+        <template x-if="$store.parameters.activities.length == 0">
+          <ul>
+            <li>None chosen yet</li>
+          </ul>
+        </template>
+    </div>
+    <div>
+      <h2>Suggested pass</h2>
+      <ul x-data="{ pass: null }" x-modelable="pass" x-model="$store.parameters.suggestedPass">
+        <template x-if="pass">
+          <div>
+            <li x-text="describePass(pass)"></li>
+            <li>Total activity cost: <span x-text="$store.parameters.getTotalActivityPrice()"></span> NTD</li>
+            <li>Total transport estimate: <span x-text="$store.parameters.transportCost"></span> NTD</li>
+          </div>
+        </template>
+        <template x-if="pass && $store.parameters.passSavings >= 0">
+          <li>👍 Potential savings: <span x-text="$store.parameters.passSavings"></span> NTD</li>
+        </template>
+        <template x-if="pass && $store.parameters.passSavings < 0">
+          <li>👎 <strong>You should not buy this pass for these choices</strong>, it will cost <span x-text="-$store.parameters.passSavings"></span> NTD more than booking the activities seperately.</li>
+        </template>
+        <template x-if="!$store.parameters.activities.length">
+          <li>No activities chosen. Choose some activities for this site to recommend a pass.</li>
+        </template>
+      </ul>
+      <h3>Suggestions</h3>
+      <template x-for="days in 3">
+        <button
+          type="button"
+          @click="$store.parameters.activities = $store.choices.getTopChoices($store.parameters.estimates.activities.count * days).map((c) => c.Choice)"
+        ><span x-text="days"></span> day pass with most savings for <span x-text="$store.parameters.estimates.activities.count"></span> activities per day</button>
+      </template>
+    </div>
+  </section>
+
+  <section>
+    <h2>Activities</h2>
+    <div x-data="{ showTypes: ['Attraction', 'Cultural Experience'], search: '' }">
+      <h3>Filter by (showing: <span x-text="showTypes.join(', ')"></span>)</h3>
+      <button type="button" @click="showTypes = ['Attraction', 'Cultural Experience']">All</button>
+      <button type="button" @click="showTypes = ['Attraction']">Attraction</button>
+      <button type="button" @click="showTypes = ['Cultural Experience']">Cultural Experience</button>
+      <input style="display: inline;" x-model="search" type="input" placeholder="Search for activity">
+      <div class="activities-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Activity</th>
+              <th>Type</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template
+              x-for="choice in $store.choices.filterChoices(showTypes, search)" 
+              :key="choice.Choice"
+            >
+              <tr>
+                <td>
+                  <!-- 
+                    Disable checkbox if (is cultural activity and one has already been selected) ||
+                    (chosen max number of activities [acts per day * max num days for pass (currently 3)]) &&
+                    choice is not already selected
+                  -->
+                  <input
+                    type="checkbox"
+                    x-model="$store.parameters.activities"
+                    :value="choice.Choice"
+                    :disabled="((choice.Type === 'Cultural Experience' && 
+                      $store.parameters.getActivitiesWithType('Cultural Experience').length === 1) ||
+                      $store.parameters.activities.length >= $store.parameters.estimates.activities.count * 3) &&
+                      !$store.parameters.activities.includes(choice.Choice)"
+                  ><span x-text="choice.Choice"></span>
+                </td>
+                <td x-text="choice.Type"></td>
+                <td><span x-text="choice.Price"></span> NTD</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+  <section 
+    x-data="{ lastUpdated: '' }"
+    x-effect="lastUpdated = Math.max($store.choices.last_updated, $store.passes.last_updated)"
+  >
+    <p>
+      Made by <a href="https://www.beyondthesprawl.com" target="_blank">Tan Zhen Yong</a>.<br>
+      Information on this page was last updated <span x-text="formatDate(lastUpdated)"></span>.<br>
+      All prices and information should always be verified with the <a href="https://taipei.funpass.app/" target="_blank">official Taipei FunPass website</a> and the respective attraction websites.
+    </p>
+  </section>
+</body>
+</html>

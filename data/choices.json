@@ -1,0 +1,150 @@
+{
+  "last_updated": "2023-08-19",
+  "choices": [
+    {
+      "Choice": "Taipei 101 Observatory",
+      "Type": "Attraction",
+      "Price": 600
+    },
+    {
+      "Choice": "Juming Museum",
+      "Type": "Attraction",
+      "Price": 350
+    },
+    {
+      "Choice": "National Palace Museum",
+      "Type": "Attraction",
+      "Price": 350
+    },
+    {
+      "Choice": "Miniatures Museum of Taiwan",
+      "Type": "Attraction",
+      "Price": 250
+    },
+    {
+      "Choice": "Maokong Gondola (round trip)",
+      "Type": "Attraction",
+      "Price": 240
+    },
+    {
+      "Choice": "Lover's Tower",
+      "Type": "Attraction",
+      "Price": 220
+    },
+    {
+      "Choice": "Miramar Entertainment Park Ferris Wheel",
+      "Type": "Attraction",
+      "Price": 200
+    },
+    {
+      "Choice": "National Museum of Marine Science & Technology",
+      "Type": "Attraction",
+      "Price": 200
+    },
+    {
+      "Choice": "Sky Lantern Police Station Electric Sky Lantern ",
+      "Type": "Attraction",
+      "Price": 200
+    },
+    {
+      "Choice": "Taipei Children's Amusement Park",
+      "Type": "Attraction",
+      "Price": 150
+    },
+    {
+      "Choice": "Beitou Museum",
+      "Type": "Attraction",
+      "Price": 120
+    },
+    {
+      "Choice": "Tamsui <-> Fisherman's Wharf Ferry (round trip)",
+      "Type": "Attraction",
+      "Price": 120
+    },
+    {
+      "Choice": "Yehliu Geopark",
+      "Type": "Attraction",
+      "Price": 120
+    },
+    {
+      "Choice": "Main Building of Chiang Kai-Shek Shilin Residence",
+      "Type": "Attraction",
+      "Price": 100
+    },
+    {
+      "Choice": "Museum of Contemporary Art Taipei ",
+      "Type": "Attraction",
+      "Price": 100
+    },
+    {
+      "Choice": "National Taiwan Museum Railway Department Park",
+      "Type": "Attraction",
+      "Price": 100
+    },
+    {
+      "Choice": "Gold Museum",
+      "Type": "Attraction",
+      "Price": 80
+    },
+    {
+      "Choice": "Heping Island Park",
+      "Type": "Attraction",
+      "Price": 80
+    },
+    {
+      "Choice": "Tamsui Historical Museum",
+      "Type": "Attraction",
+      "Price": 80
+    },
+    {
+      "Choice": "The Lin Family Mansion and Garden",
+      "Type": "Attraction",
+      "Price": 80
+    },
+    {
+      "Choice": "Taipei Zoo",
+      "Type": "Attraction",
+      "Price": 60
+    },
+    {
+      "Choice": "National Taiwan Museum Main Hall",
+      "Type": "Attraction",
+      "Price": 30
+    },
+    {
+      "Choice": "National Taiwan Museum Namen Branch",
+      "Type": "Attraction",
+      "Price": 30
+    },
+    {
+      "Choice": "Taipei Fine Art Museum",
+      "Type": "Attraction",
+      "Price": 30
+    },
+    {
+      "Choice": "National Taiwan Museum Land Bank Outpost Exhibition Hall",
+      "Type": "Attraction",
+      "Price": 20
+    },
+    {
+      "Choice": "Yoshan Tea - Century-old Taiwanese Bubble Tea DIY",
+      "Type": "Cultural Experience",
+      "Price": 650
+    },
+    {
+      "Choice": "Secret Tunnel experience & drinks in the Grand Hotel",
+      "Type": "Cultural Experience",
+      "Price": 450
+    },
+    {
+      "Choice": "Tea bag DIY in Maokong",
+      "Type": "Cultural Experience",
+      "Price": 250
+    },
+    {
+      "Choice": "Sky Lantern Experience in Pingxi",
+      "Type": "Cultural Experience",
+      "Price": 200
+    }
+  ]
+}
